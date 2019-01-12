@@ -38,7 +38,7 @@ pub fn find_owner(message: &Message) -> Option<&str> {
     let prefix = message.prefix.as_ref()?;
     let index = prefix.find('!')?;
     let name = &prefix[..index];
-    if name.starts_with("slackbridge") {
+    if name.starts_with("slackbridge") || name.starts_with("discordbridge") {
         if let Command::PRIVMSG(_, message) = &message.command {
             if message.chars().next() != Some('<') { return None; }
             let end = message.find('>')?;
