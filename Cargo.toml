@@ -4,5 +4,5 @@ name = "foodorder_bot"
 version = "0.1.0"
 
 [dependencies]
-irc = { version = "0.13.5", features = ["json"] }
-lazy_static = "1.1.0"
+irc = { version = "0.13", features = ["json"] }
+lazy_static = "1.2"

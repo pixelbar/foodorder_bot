@@ -51,8 +51,11 @@ impl State {
         }
 
         for (person, order) in &state.orders {
-            if is_first { is_first = false; }
-            else { result += ", "; }
+            if is_first {
+                is_first = false;
+            } else {
+                result += ", ";
+            }
             result += person;
             result += " wants ";
             result += order;
