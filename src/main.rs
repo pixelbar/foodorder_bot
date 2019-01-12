@@ -2,18 +2,18 @@ extern crate irc;
 #[macro_use]
 extern crate lazy_static;
 
-mod state;
 mod handler;
+mod state;
 
-use irc::client::Client;
+use handler::{find_owner, handle_message};
 use irc::client::data::Config;
 use irc::client::ext::ClientExt;
 use irc::client::reactor::IrcReactor;
+use irc::client::Client;
 use irc::proto::Command;
 use std::fs;
 use std::io::Write;
 use std::path::PathBuf;
-use handler::{handle_message, find_owner};
 
 const CONFIG_FILE: &str = "config.json";
 const COMMAND_PREFIX: &str = "#foodorder";
@@ -36,7 +36,18 @@ fn main() {
                 if let Some(owner) = find_owner(&message) {
                     let foodorder = text[index + COMMAND_PREFIX.len()..].trim();
                     let response = handle_message(owner, foodorder);
-                    client.send(Command::PRIVMSG(channel.to_owned(), response)).expect("Could not send reply message");
+
+                    let mut index = 0;
+                    while index < response.len() {
+                        let length = 450.min(response.len() - index);
+                        client
+                            .send(Command::PRIVMSG(
+                                channel.to_owned(),
+                                response[index..index + length].to_owned(),
+                            ))
+                            .expect("Could not send reply message");
+                        index += length;
+                    }
                 }
             }
         }
@@ -57,5 +68,6 @@ fn write_default_file(path: &str) {
         "#pixelbar-test"
     ]
 }"##,
-    ).expect("Could not write config file");
+    )
+    .expect("Could not write config file");
 }
