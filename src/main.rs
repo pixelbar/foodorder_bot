@@ -1,7 +1,9 @@
+extern crate chrono;
 extern crate irc;
 #[macro_use]
 extern crate lazy_static;
 
+mod clear_thread;
 mod handler;
 mod state;
 
@@ -29,6 +31,8 @@ fn main() {
         .prepare_client_and_connect(&Config::load(CONFIG_FILE).expect("Could not read config file"))
         .expect("Could not create client");
     client.identify().unwrap();
+
+    std::thread::spawn(crate::clear_thread::start_clear_thread);
 
     reactor.register_client_with_handler(client, |client, message| {
         if let Command::PRIVMSG(channel, text) = &message.command {
