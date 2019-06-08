@@ -1,6 +1,14 @@
 language: rust
+dist: xenial
+
 services:
 - docker
+
+addons:
+  apt:
+    packages:
+    - libssl-dev
+
 script:
 - cargo test || travis_terminate 1;
 - cargo build --release || travis_terminate 1;
