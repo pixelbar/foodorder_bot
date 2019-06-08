@@ -5,8 +5,10 @@ script:
 - cargo test || travis_terminate 1;
 - cargo build --release || travis_terminate 1;
 - docker build -t foodorder_bot . || travis_terminate 1;
-before-deploy:
+
+before_deploy:
 - docker save foodorder_bot --output foodorder_bot.tar
+
 deploy:
   provider: releases
   api_key:
