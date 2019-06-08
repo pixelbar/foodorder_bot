@@ -1,0 +1,18 @@
+language: rust
+services:
+- docker
+script:
+- cargo test || travis_terminate 1;
+- cargo build --release || travis_terminate 1;
+- docker build -t foodorder_bot . || travis_terminate 1;
+before-deploy:
+- docker save foodorder_bot --output foodorder_bot.tar
+deploy:
+  provider: releases
+  api_key:
+    secure: Cbq5PYsKQF+iACEdNYXUWm1BsQHYi7cfWXre2iB5QQv3Izk5/ukcfBaLSVPpF3OrMPKmbBhpClMkvsYD659zP/7CMtdryHxeoQjIpnriiEPYHm+8b6wvv5Us/sbvD3CPgOuDIJ3YzxIyp6s7rCKfBS2WLUs7ydtYAv/Q+2xUHomz2Uo9I1B4zipHyMfZeoOriA/9bK1x01AsAnGbo+3St0yGTbTFNRFAcIPELdlunrrBiKZQ/04MunH6WVIFJtTR9WRfttnJudnOjlqnt30Ttt14A61FiSOw3HEx1J7mcvc4SC2s89D7O/g60PTQrlJuuTrLZixrA+viPnIZiQlEsWNe5tQE3FgOqjnDb+V46jlI2FxSFv/9gN1XxHp7MpkbVIeMUW5I6YjIzffUCUbNSI+Qac37B5tlB3YV7l/JxJGibVAwKUv3RZdsgcWHSqawMP+hpvd9Hw8W+Iw9xyIwKOlaSrVObvPHZhzBGKYfjLAZv/+CEulVrSecnKf+PrS4/+DeCGf3AiSliagjcwstC9HihgFzNvGsXP+QCeDjlhlJgtIGkowfSpnu2aO2stLctaLogOHk44TZXelSGI9ipeNdPW/vQ+dwDhxJa3UVclf2S/euGcr5KdNN1h+O8g61EJUSHS3UMJD4cqgo3J5Aw5gIgukoDM2cd2esdLiz/JE=
+  file: foodorder_bot.tar
+  skip_cleanup: true
+  on:
+    repo: pixelbar/foodorder_bot
+    tags: true
