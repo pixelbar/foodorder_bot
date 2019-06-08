@@ -1,5 +1,7 @@
 # Foodorder bot
 
+[![Build Status](https://travis-ci.org/pixelbar/foodorder_bot.svg?branch=master)](https://travis-ci.org/pixelbar/foodorder_bot)
+
 This is a foodorder bot for the [Pixelbar](https://www.pixelbar.nl) hackerspace.
 
 ## Run
